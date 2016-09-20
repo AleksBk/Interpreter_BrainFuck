@@ -9,7 +9,29 @@
 #include <stack>
 using namespace std;
 
-void checkChar(char c, int* t, int i, stack<int>* s)
+void pushToStack(stack<int>* mStack, int posision)
+{
+	mStack->push(posision);
+}
+
+
+int checkActualCell(int* vskTab, stack<int>* myStack)
+{
+	if (*vskTab == 0)
+	{
+		myStack->pop();
+		return 1;
+	}
+
+	// if cell == 0, clean possision in stack and leave loop  
+	return 0;
+}
+
+
+
+void backToBeginLoop(string& b2, int pos, int* table, stack<int>* mS2);
+
+void checkChar(string& buf2, char c, int* t, int i, stack<int>* s)
 {
 	switch (c)
 	{
@@ -23,31 +45,26 @@ void checkChar(char c, int* t, int i, stack<int>* s)
 	case '[':pushToStack(s, i);  break;
 	case ']':
 	{
-		if( checkActualCell(t)== 1) break;
-		else backToBeginLoop(s->top() , t); 
+		if( checkActualCell(t, s)== 1) break;
+		else backToBeginLoop(buf2, s->top() , t, s); 
 	}
 	default:
 		break;
 	}
 }
 
-
-void pushToStack(stack<int>* mStack, int posision)
+int crossString(string& b, int* t2, int pos2, stack<int>* myS)
 {
-	mStack->push(posision);
+	checkChar(b, b[pos2], t2, pos2, myS);
+	return pos2;
 }
 
-
-int checkActualCell( int* vskTab )
+void backToBeginLoop(string& b2, int pos, int* table, stack<int>* mS2)
 {
-	if (*vskTab == 0) return 1; 
-	// if cell == 0, clean possision in stack.  leave loop  
+	crossString(b2, table, pos, mS2);
+
 }
 
-void backToBeginLoop( int pos, int* table )
-{
-
-}
 
 int main()
 {
@@ -78,7 +95,7 @@ int main()
 	
 	while (n != len) // operete on every single char 
 	{
-		checkChar(buff[n], tab, n , myStack);
+		n = crossString(buff, tab, n, myStack); 
 		n++;
 	}
 	//	buff.erase();
