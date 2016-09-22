@@ -29,9 +29,7 @@ int checkActualCell(int* vskTab, stack<int>* myStack)
 
 
 
-void backToBeginLoop(string& b2, int pos, int* table, stack<int>* mS2);
-
-void checkChar(string& buf2, char c, int* t, int i, stack<int>* s)
+int checkChar(char c, int*& t, int i, stack<int>* s)
 {
 	switch (c)
 	{
@@ -39,30 +37,22 @@ void checkChar(string& buf2, char c, int* t, int i, stack<int>* s)
 	case '-': --(*t); break;
 	case '>': t++; break;
 	case '<': t--; break;
-	case '.': printf("%c ", *t + 'A'); break;
+	case '.': printf("%c ", *t ); break;
 	case '=': printf("%d ", *t); break;
 	case ',': *t = getchar(); break;
 	case '[':pushToStack(s, i);  break;
 	case ']':
 	{
 		if( checkActualCell(t, s)== 1) break;
-		else backToBeginLoop(buf2, s->top() , t, s); 
+		else
+		{
+			return s->top();
+		}
 	}
 	default:
 		break;
 	}
-}
-
-int crossString(string& b, int* t2, int pos2, stack<int>* myS)
-{
-	checkChar(b, b[pos2], t2, pos2, myS);
-	return pos2;
-}
-
-void backToBeginLoop(string& b2, int pos, int* table, stack<int>* mS2)
-{
-	crossString(b2, table, pos, mS2);
-
+	return i;
 }
 
 
@@ -90,16 +80,17 @@ int main()
 		getline(file, buff); // take line
 		buff2.append(buff); // add to end string 
 	}
-	int len = buff.length();
+	int len = buff2.length();
 	int n = 0;
 	
 	while (n != len) // operete on every single char 
 	{
-		n = crossString(buff, tab, n, myStack); 
+		n = checkChar(buff2[n], tab, n, myStack); 
 		n++;
 	}
 	//	buff.erase();
 
+	delete[] p;
 	delete myStack; 
 	file.close();
 	return 0;
